@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Carousel Component" />
+    <meta name="author" content="ツキノリュウ" />
+    <title>Carousel Component</title>
+    <link href="css/bootstrap-reboot.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <section class="content-wrap">
+        <h1 class="content-wrap__title">Carousel Component</h1>
+        <div class="demo">
+            <Carousel :data="carouselData" :auto="true" :speed="3000" :arrow="true"></Carousel>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        const carousel = {
+            template: `
+                <div class="carousel">
+                    <transition-group tag="ul" name="fade" class="carousel__list">
+                        <li class="carousel__list__item" v-for="(item,index) in carouselData" :key="item.id" @dragstart="swipeStart" @dragend="swipeEnd" @touchstart="swipeStart" @touchend="swipeEnd" v-show="item.carouselShow">
+                            <a :href="item.href" v-if="item.href"> 
+                                <img :src="item.src" :alt="item.title">
+                            </a>
+                            <img :src="item.src" :alt="item.title" v-else>
+                        </li>
+                    </transition-group>
+                    <ul class="carousel__nav" v-if="carouselData.length > 1">
+                        <li class="carousel__nav__arrow carousel__nav__arrow__previous" @click="previous" v-if="carouselArrow">＜</li>
+                        <li class="carousel__nav__item" :class="{'carousel__nav__item--active':item.carouselShow}" v-for="(item,index) in carouselData" :key="item.id" @click="jumpTo(item.id)">
+                            <div class="carousel__nav__item__animation" :style="navTransition" v-if="item.carouselShow"></div>
+                            <div class="carousel__nav__item__animation" v-else></div>
+                        </li>
+                        <li class="carousel__nav__arrow carousel__nav__arrow__next" @click="next" v-if="carouselArrow">＞</li>
+                    </ul>
+                </div>`,
+            props: ["data", "auto", "speed", "arrow"],
+            data() {
+                return {
+                    carouselData: [],
+                    carouselArrow: false,
+                    carouselAuto: false,
+                    autoplaySpeed: 3000,
+                    interval: null,
+                    clientX: null
+                }
+            },
+            computed: {
+                currentCarousel() {
+                    return this.carouselData.filter(item => item.carouselShow === true);
+                },
+                navTransition() {
+                    return {
+                        transitionProperty: 'width',
+                        transitionDuration: this.autoplaySpeed + 'ms',
+                        transitionTimingFunction: 'linear'
+                    };
+                }
+            },
+            methods: {
+                getData() {
+                    // deep copy props data
+                    let propsData = JSON.parse(JSON.stringify(this.data));
+                    propsData.forEach(element => {
+                        element.carouselShow = false;
+                    });
+                    this.carouselData = propsData;
+
+                    // chgange default value
+                    if (this.arrow !== undefined) {
+                        this.carouselArrow = this.arrow;
+                    }
+                    if (this.auto !== undefined) {
+                        this.carouselAuto = this.auto;
+                    }
+                    if (this.speed !== undefined) {
+                        this.autoplaySpeed = this.speed;
+                    }
+                },
+                swipeStart(e) {
+                    let isMobile = /(Android|Phone|iPad|iPod|blackberry|SymbianOS|Windows Phone|wap|mobile|webos)/i.test(navigator.userAgent);
+                    if (isMobile) {
+                        this.clientX = e.changedTouches[0].clientX;
+                    } else {
+                        this.clientX = e.clientX;
+                    }
+                },
+                swipeEnd(e) {
+                    let isMobile = /(Android|Phone|iPad|iPod|blackberry|SymbianOS|Windows Phone|wap|mobile|webos)/i.test(navigator.userAgent);
+                    if (isMobile) {
+                        if (e.changedTouches[0].clientX > this.clientX) {
+                            this.next();
+                        } else {
+                            this.previous();
+                        }
+                    } else {
+                        if (e.clientX > this.clientX) {
+                            this.next();
+                        } else {
+                            this.previous();
+                        }
+                    }
+                },
+                next() {
+                    let currentCarouselIndex = this.carouselData.indexOf(this.currentCarousel[0]);
+
+                    if (currentCarouselIndex + 1 <= this.carouselData.length - 1) {
+                        this.carouselData[currentCarouselIndex].carouselShow = false;
+                        this.carouselData[currentCarouselIndex + 1].carouselShow = true;
+                    } else {
+                        this.carouselData[currentCarouselIndex].carouselShow = false;
+                        this.carouselData[0].carouselShow = true;
+                    }
+
+                    this.resetTimer();
+                },
+                previous() {
+                    let currentCarouselIndex = this.carouselData.indexOf(this.currentCarousel[0]);
+
+                    if (currentCarouselIndex - 1 >= 0) {
+                        this.carouselData[currentCarouselIndex].carouselShow = false;
+                        this.carouselData[currentCarouselIndex - 1].carouselShow = true;
+                    } else {
+                        this.carouselData[currentCarouselIndex].carouselShow = false;
+                        this.carouselData[this.carouselData.length - 1].carouselShow = true;
+                    }
+
+                    this.resetTimer();
+                },
+                autoplay() {
+                    this.interval = setInterval(() => {
+                        this.next();
+                    }, this.autoplaySpeed);
+                },
+                jumpTo(value) {
+                    if (value !== this.currentCarousel[0].id) {
+                        this.currentCarousel[0].carouselShow = false;
+                        this.carouselData[value - 1].carouselShow = true;
+                    }
+
+                    this.resetTimer();
+                },
+                resetTimer() {
+                    if (this.carouselAuto) {
+                        clearInterval(this.interval);
+                        this.autoplay();
+                    }
+                }
+            },
+            created() {
+                this.getData();
+            },
+            mounted() {
+                setTimeout(() => {
+                    this.carouselData[0].carouselShow = true;
+                }, 0);
+                if (this.carouselAuto) {
+                    this.autoplay();
+                }
+            }
+        };
+
+        const vm = new Vue({
+            el: '.demo',
+            components: {
+                'carousel': carousel,
+            },
+            data() {
+                return {
+                    carouselData: [{
+                        id: "1",
+                        src: "./images/carousel_01.jpg",
+                        title: "Carousel 01"
+                    }, {
+                        id: "2",
+                        src: "./images/carousel_02.jpg",
+                        title: "Carousel 02"
+                    }, {
+                        id: "3",
+                        src: "./images/carousel_03.jpg",
+                        title: "Carousel 03"
+                    }],
+                }
+            },
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,227 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC:100,300,400,500,700,900&display=swap&subset=chinese-traditional");
+*:focus {
+  outline: none !important;
+}
+
+html,
+body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: "Noto Sans TC", "Helvetica Neue", "PingFang TC", "Heiti TC", "Adobe 繁黑體 Std", "AdobeFanHeitiStd-Bold", "微軟正黑體", sans-serif;
+  line-height: 1.75;
+  background-color: #f9f9f9;
+}
+
+h1 {
+  font-weight: 700;
+  font-family: "Noto Sans TC", "Helvetica Neue", "PingFang TC", "Heiti TC", "Adobe 繁黑體 Std", "AdobeFanHeitiStd-Bold", "微軟正黑體", sans-serif;
+  line-height: 1.5;
+  margin-top: 1em;
+  margin-bottom: 0.6em;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  border: 0;
+}
+
+.content-wrap {
+  width: 100%;
+  max-width: calc(1920px - calc(calc(calc(calc(1920px - calc(1.5rem* 21)) / 20) + 1.5rem) * 6));
+  margin: 0 auto;
+  padding: calc(4.375rem/ 1.5) 1.5rem;
+}
+
+@media (max-width: 991.98px) {
+  .content-wrap {
+    padding: calc(4.375rem + calc(1.5rem/ 2)) 1.5rem;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .content-wrap {
+    padding: calc(4.375rem/ 2) 1.5rem calc(4.375rem + calc(1.5rem/ 2));
+  }
+}
+
+.content-wrap__title {
+  position: relative;
+  width: 100%;
+  margin: 0 auto 1.5rem;
+  line-height: 2;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0 auto calc(1.5rem* 2);
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+@media (max-width: 991.98px) {
+  .content-wrap__title {
+    text-align: center;
+  }
+}
+
+.content-wrap__title::after {
+  display: block;
+  content: "";
+  height: 1px;
+  margin: calc(1.5rem/ 2) auto 0;
+  border-radius: 99em;
+  background-color: #ebebeb;
+}
+
+.content-wrap__title::after {
+  max-width: 6em;
+  height: 2px;
+  background-color: #007fff;
+}
+
+.demo {
+  width: 100%;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  -webkit-transition: all 0.35s ease-in-out;
+  transition: all 0.35s ease-in-out;
+}
+
+.fade-leave-active {
+  position: absolute;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.carousel {
+  position: relative;
+  width: 100%;
+}
+
+.carousel__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+}
+
+.carousel__list__item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  max-height: 400px;
+  overflow: hidden;
+}
+
+.carousel__list__item img {
+  width: 100%;
+}
+
+.carousel__nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.carousel__nav__item {
+  width: 10%;
+  height: 0.5rem;
+  margin-right: 1.5rem;
+  background-color: #c7ccd1;
+  border-radius: 99em;
+  cursor: pointer;
+}
+
+.carousel__nav__item:nth-last-child(2) {
+  margin-right: 0;
+}
+
+@media (max-width: 991.98px) {
+  .carousel__nav__item {
+    margin-right: 5vw;
+  }
+}
+
+.carousel__nav__item__animation {
+  width: 0;
+  height: 100%;
+  background-color: #007fff;
+  border-radius: 99em;
+}
+
+.carousel__nav__item--active .carousel__nav__item__animation {
+  width: 100%;
+}
+
+.carousel__nav__arrow {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  color: #ffffff;
+  border-radius: 99em;
+  background-color: #007fff;
+  font-weight: 900;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.carousel__nav__arrow:hover {
+  background-color: #e80012;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.carousel__nav__arrow__next {
+  margin-left: auto;
+}
+
+.carousel__nav__arrow__previous {
+  margin-right: auto;
+}
