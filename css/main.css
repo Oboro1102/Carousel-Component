@@ -37,6 +37,10 @@ button {
   border: 0;
 }
 
+[v-cloak]{
+  display: none;
+}
+
 .content-wrap {
   width: 100%;
   max-width: calc(1920px - calc(calc(calc(calc(1920px - calc(1.5rem* 21)) / 20) + 1.5rem) * 6));
